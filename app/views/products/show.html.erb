@@ -69,14 +69,14 @@
       <h2 class="text-lg font-bold text-gray-900 mb-4">商品説明</h2>
       <div class="text-gray-700 leading-relaxed whitespace-pre-line">
         <%# 脆弱性を含まないバージョン（安全・参考用） %>
-        <%= @product.description %>
-
-        <%# 第5章: XSS: 商品説明をHTMLタグで装飾して表示したいという理由でrawを使うと、
-            利用者に由来する値（description）に対してrawを使うことになり、
-            <script>タグなどがそのまま実行されてしまう（格納型XSS） %>
         <% if false %>
-          <%= raw @product.description %>
+          <%= @product.description %>
         <% end %>
+
+        <%# 第5章: XSS: 商品説明をHTMLタグで装飾して表示したいという理由でrawを使っているが、
+            利用者に由来する値（description）に対してrawを使うと、
+            <script>タグなどがそのまま実行されてしまう（格納型XSS） %>
+        <%= raw @product.description %>
       </div>
     </div>
   </div>
