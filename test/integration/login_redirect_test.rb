@@ -11,43 +11,41 @@ class LoginRedirectTest < ActionDispatch::IntegrationTest
     assert_redirected_to "/products"
   end
 
-  # 第9章: オープンリダイレクトの回帰テスト。
+  # 第9章: オープンリダイレクト（現在有効）の回帰テスト。
   #
   # 脆弱性を含まないバージョン（安全・参考用）:
-  test "rejects an open redirect to an external host" do
-    post user_session_path, params: {
-      redirect_to: "//evil.example.com",
-      user: { email: "user@example.com", password: "password" }
-    }
-
-    assert_redirected_to root_path
-  end
-
-  # test "currently follows an open redirect to an external host" do
+  # test "rejects an open redirect to an external host" do
   #   post user_session_path, params: {
   #     redirect_to: "//evil.example.com",
   #     user: { email: "user@example.com", password: "password" }
   #   }
   #
-  #   assert_redirected_to "//evil.example.com"
+  #   assert_redirected_to root_path
   # end
-
-  # 脆弱性を含まないバージョン（安全・参考用）:
-  test "rejects a backslash-based open redirect" do
+  test "currently follows an open redirect to an external host" do
     post user_session_path, params: {
-      redirect_to: "/\\evil.example.com",
+      redirect_to: "//evil.example.com",
       user: { email: "user@example.com", password: "password" }
     }
 
-    assert_redirected_to root_path
+    assert_redirected_to "//evil.example.com"
   end
 
-  # test "currently follows a backslash-based open redirect" do
+  # 脆弱性を含まないバージョン（安全・参考用）:
+  # test "rejects a backslash-based open redirect" do
   #   post user_session_path, params: {
   #     redirect_to: "/\\evil.example.com",
   #     user: { email: "user@example.com", password: "password" }
   #   }
   #
-  #   assert_redirected_to "/\\evil.example.com"
+  #   assert_redirected_to root_path
   # end
+  test "currently follows a backslash-based open redirect" do
+    post user_session_path, params: {
+      redirect_to: "/\\evil.example.com",
+      user: { email: "user@example.com", password: "password" }
+    }
+
+    assert_redirected_to "/\\evil.example.com"
+  end
 end

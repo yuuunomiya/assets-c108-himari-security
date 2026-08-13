@@ -8,17 +8,17 @@
 # ここでは指定していない。本番環境では config.force_ssl = true により secure Cookie が有効になる。
 #
 # 脆弱性を含まないバージョン（安全・参考用）:
-Rails.application.config.session_store :cookie_store,
-                                       key: "_millennium_parts_session",
-                                       httponly: true,
-                                       same_site: :lax
-
-# 第9章: Cookie属性の設定不備:
-# httponly を false にしてしまうと、JavaScriptからdocument.cookieで
-# セッションCookieの中身を読み取れてしまう。第5章のXSSと組み合わせると、
-# 検索クエリに仕込んだスクリプトから直接セッションCookieを盗み出せてしまう。
 #
 # Rails.application.config.session_store :cookie_store,
 #                                        key: "_millennium_parts_session",
-#                                        httponly: false,
+#                                        httponly: true,
 #                                        same_site: :lax
+
+# 第9章: Cookie属性の設定不備（現在有効）:
+# httponly を false にしてしまっているため、JavaScriptからdocument.cookieで
+# セッションCookieの中身を読み取れてしまう。第5章のXSSと組み合わせると、
+# 検索クエリに仕込んだスクリプトから直接セッションCookieを盗み出せてしまう。
+Rails.application.config.session_store :cookie_store,
+                                       key: "_millennium_parts_session",
+                                       httponly: false,
+                                       same_site: :lax
