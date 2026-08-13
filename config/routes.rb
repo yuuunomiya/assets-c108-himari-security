@@ -2,12 +2,10 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: "users/registrations" }
 
   # 第7章: CSRF演習用。本来は破壊的操作にGETを使うべきではないが、
-  # 「ワンクリックで退会できる」利便性のために誤ってGETで実装してしまうと、
-  # 外部サイトからのCSRF攻撃で退会させられてしまう（vuln/ch07-csrfブランチで有効化）。
-  #
-  # devise_scope :user do
-  #   get "users/quick_delete", to: "users/registrations#quick_delete", as: :quick_delete_registration
-  # end
+  # 「ワンクリックで退会できる」利便性のために誤ってGETで実装してしまっている。
+  devise_scope :user do
+    get "users/quick_delete", to: "users/registrations#quick_delete", as: :quick_delete_registration
+  end
 
   get "up" => "rails/health#show", as: :rails_health_check
 

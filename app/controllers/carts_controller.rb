@@ -4,10 +4,9 @@ class CartsController < ApplicationController
   # （verify_authenticity_token）を有効にしたままにしている。
 
   # 第7章: CSRF：
-  # CSRFトークンの検証を無効化してしまうと、外部サイトに設置した
+  # CSRFトークンの検証を無効化してしまっている。これにより、外部サイトに設置した
   # 自動送信フォームなどからでも、このアクションにCSRFトークンなしでPOSTできてしまう。
-  #
-  # skip_before_action :verify_authenticity_token, only: [:add]
+  skip_before_action :verify_authenticity_token, only: [:add]
 
   def show
     @cart = current_cart
