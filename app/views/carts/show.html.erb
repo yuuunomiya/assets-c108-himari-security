@@ -1,0 +1,93 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">ショッピングカート</h1>
+
+  <% if @cart_items.any? %>
+    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden mb-6">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-gray-200 bg-gray-50">
+            <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">商品</th>
+            <th class="text-right px-6 py-4 text-sm font-semibold text-gray-600">単価</th>
+            <th class="text-center px-6 py-4 text-sm font-semibold text-gray-600">数量</th>
+            <th class="text-right px-6 py-4 text-sm font-semibold text-gray-600">小計</th>
+            <th class="px-6 py-4"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <% @cart_items.each do |item| %>
+            <tr>
+              <td class="px-6 py-4">
+                <div class="flex items-center space-x-4">
+                  <% if item.product.image_url.present? %>
+                    <img src="<%= item.product.image_url %>" alt="<%= item.product.name %>"
+                         class="w-16 h-16 object-cover rounded-lg border border-gray-100">
+                  <% else %>
+                    <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  <% end %>
+                  <div>
+                    <%= link_to item.product.name, product_path(item.product),
+                        class: "text-sm font-medium text-gray-900 hover:text-blue-600" %>
+                    <p class="text-xs text-slate-500 mt-0.5"><%= item.product.category_label %></p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-right text-sm text-gray-700">
+                ¥<%= number_with_delimiter(item.product.price) %>
+              </td>
+              <td class="px-6 py-4">
+                <%= form_with url: update_item_cart_path(product_id: item.product.id), method: :patch, class: "flex items-center justify-center space-x-2" do |f| %>
+                  <%= f.number_field :quantity, value: item.quantity, min: 0,
+                      class: "w-16 border border-gray-300 rounded-lg px-2 py-1 text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                      onchange: "this.form.submit()" %>
+                <% end %>
+              </td>
+              <td class="px-6 py-4 text-right text-sm font-semibold text-gray-900">
+                ¥<%= number_with_delimiter(item.subtotal) %>
+              </td>
+              <td class="px-6 py-4">
+                <%= form_with url: remove_from_cart_path(product_id: item.product.id), method: :delete do |f| %>
+                  <%= f.submit "×", class: "text-gray-400 hover:text-red-500 transition-colors cursor-pointer bg-transparent border-none text-lg font-bold" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 合計・注文ボタン -->
+    <div class="bg-white rounded-2xl border border-gray-200 p-6">
+      <div class="flex justify-between items-center mb-6">
+        <span class="text-lg font-bold text-gray-900">合計金額</span>
+        <span class="text-2xl font-bold text-gray-900">¥<%= number_with_delimiter(@total) %></span>
+      </div>
+
+      <% if user_signed_in? %>
+        <%= link_to "注文手続きへ進む", new_order_path,
+            class: "block w-full text-center bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 transition-colors text-lg" %>
+      <% else %>
+        <div class="text-center">
+          <p class="text-gray-600 mb-3">注文するにはログインが必要です</p>
+          <%= link_to "ログインして注文する", new_user_session_path,
+              class: "block w-full text-center bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 transition-colors text-lg" %>
+          <p class="text-sm text-gray-500 mt-2">
+            アカウントをお持ちでない方は
+            <%= link_to "こちらから新規登録", new_user_registration_path, class: "text-blue-600 hover:underline" %>
+          </p>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-16 bg-white rounded-2xl border border-gray-200">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-200 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6M17 13l1.5 6M9 19a1 1 0 100 2 1 1 0 000-2zm8 0a1 1 0 100 2 1 1 0 000-2z" />
+      </svg>
+      <p class="text-gray-500 mb-4">カートに商品がありません</p>
+      <%= link_to "商品を探す", products_path, class: "text-blue-600 hover:underline font-medium" %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,72 @@
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <nav class="text-sm text-gray-500 mb-6">
+    <%= link_to "アカウント設定", profile_path, class: "hover:text-blue-600" %> &rsaquo;
+    <span class="text-gray-900">パスワード・退会の設定</span>
+  </nav>
+
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">パスワード・退会の設定</h1>
+
+  <div class="bg-white rounded-2xl border border-gray-200 p-8">
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "space-y-5" }) do |f| %>
+      <div>
+        <%= f.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email",
+            class: "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+      </div>
+
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div class="text-sm text-gray-500">確認待ちのメールアドレス: <%= resource.unconfirmed_email %></div>
+      <% end %>
+
+      <div>
+        <%= f.label :password, "新しいパスワード", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <p class="text-xs text-gray-500 mb-1">変更しない場合は空欄のままにしてください</p>
+        <%= f.password_field :password, autocomplete: "new-password",
+            class: "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+        <% if @minimum_password_length %>
+          <p class="text-xs text-gray-500 mt-1"><%= @minimum_password_length %>文字以上で入力してください</p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password",
+            class: "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+      </div>
+
+      <div>
+        <%= f.label :current_password, "現在のパスワード", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <p class="text-xs text-gray-500 mb-1">変更内容の確認のため、現在のパスワードを入力してください</p>
+        <%= f.password_field :current_password, autocomplete: "current-password",
+            class: "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+      </div>
+
+      <div class="flex gap-3 pt-2">
+        <%= f.submit "更新する",
+            class: "bg-blue-600 text-white font-bold px-6 py-2.5 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer" %>
+        <%= link_to "キャンセル", profile_path,
+            class: "text-gray-600 hover:text-gray-800 font-medium px-6 py-2.5 border border-gray-300 rounded-lg transition-colors" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-gray-200 p-8 mt-6">
+    <h2 class="text-lg font-bold text-gray-900 mb-2">退会をご希望の場合</h2>
+    <p class="text-sm text-gray-500 mb-4">確認画面を挟まず、ワンクリックで退会処理が完了します。</p>
+    <%# 脆弱性を含まないバージョン（安全・参考用）:
+        button_to (POST/DELETE + CSRFトークン) と確認ダイアログを使う。 %>
+    <%= button_to "退会する", registration_path(resource_name),
+        data: { confirm: "本当によろしいですか？" }, method: :delete,
+        class: "text-red-600 hover:text-red-700 font-medium text-sm bg-transparent border-0 p-0 cursor-pointer" %>
+
+    <%# 第7章: CSRF演習用（vuln/ch07-csrfブランチで有効化）：
+        「確認ダイアログが面倒」という理由で、退会リンクをGETリクエストにしてしまうと、
+        外部サイトの自動送信リンク・フォームから退会させられてしまう。 %>
+    <% if false %>
+      <%= link_to "ワンクリックで退会する", quick_delete_registration_path,
+          class: "text-red-600 hover:text-red-700 font-medium text-sm" %>
+    <% end %>
+  </div>
+</div>

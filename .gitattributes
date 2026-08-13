@@ -1,0 +1,16 @@
+# このアプリは Docker（Linux）コンテナ内で動かすことを前提としている。
+# Windows でクローンした際に改行コードが CRLF に変換されると、bin/ 以下の
+# スクリプトのシェバン（#!/usr/bin/env ruby）が壊れ、
+# `docker compose exec web bin/bundler-audit` などが実行できなくなる。
+# そのため、チェックアウト時も含めて改行コードを LF に統一する。
+* text=auto eol=lf
+
+# バイナリファイルは変換しない
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.enc binary

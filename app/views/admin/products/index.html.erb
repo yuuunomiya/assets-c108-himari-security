@@ -1,0 +1,83 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">商品管理</h1>
+    <%= link_to "＋ 新規登録", new_admin_product_path,
+        class: "bg-blue-600 text-white font-bold px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors" %>
+  </div>
+
+  <% if @products.any? %>
+    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-gray-200 bg-gray-50">
+            <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">商品名</th>
+            <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">カテゴリ</th>
+            <th class="text-right px-6 py-4 text-sm font-semibold text-gray-600">価格</th>
+            <th class="text-right px-6 py-4 text-sm font-semibold text-gray-600">在庫</th>
+            <th class="text-center px-6 py-4 text-sm font-semibold text-gray-600">おすすめ</th>
+            <th class="text-center px-6 py-4 text-sm font-semibold text-gray-600">販売状態</th>
+            <th class="px-6 py-4"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <% @products.each do |product| %>
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center space-x-3">
+                  <% if product.image_url.present? %>
+                    <img src="<%= product.image_url %>" alt="<%= product.name %>"
+                         class="w-10 h-10 object-cover rounded-lg border border-gray-100">
+                  <% else %>
+                    <div class="w-10 h-10 bg-gray-100 rounded-lg"></div>
+                  <% end %>
+                  <span class="text-sm font-medium text-gray-900 line-clamp-2"><%= product.name %></span>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">
+                  <%= product.category_label %>
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right text-sm text-gray-700">
+                ¥<%= number_with_delimiter(product.price) %>
+              </td>
+              <td class="px-6 py-4 text-right text-sm">
+                <span class="<%= product.in_stock? ? 'text-gray-700' : 'text-red-500 font-medium' %>">
+                  <%= product.stock %>
+                </span>
+              </td>
+              <td class="px-6 py-4 text-center text-sm">
+                <%= product.featured? ? "★" : "—" %>
+              </td>
+              <td class="px-6 py-4 text-center text-sm">
+                <% if product.discontinued? %>
+                  <span class="text-xs text-red-600 bg-red-50 px-2 py-0.5 rounded-full font-medium">販売停止中</span>
+                <% else %>
+                  <span class="text-xs text-gray-400">—</span>
+                <% end %>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <div class="flex items-center justify-end space-x-3">
+                  <%= link_to "編集", edit_admin_product_path(product),
+                      class: "text-blue-600 hover:underline text-sm font-medium" %>
+                  <%= link_to "削除", admin_product_path(product),
+                      data: { turbo_method: :delete, turbo_confirm: "「#{product.name}」を削除しますか？" },
+                      class: "text-red-500 hover:underline text-sm font-medium" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="text-center py-16 bg-white rounded-2xl border border-gray-200">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" />
+      </svg>
+      <p class="text-gray-500 mb-4">商品が登録されていません</p>
+      <%= link_to "最初の商品を登録する", new_admin_product_path,
+          class: "inline-block bg-blue-600 text-white font-bold px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors" %>
+    </div>
+  <% end %>
+</div>

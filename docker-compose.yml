@@ -1,0 +1,43 @@
+# プロジェクト名を固定する。これを省略するとクローン先のフォルダ名がそのまま
+# コンテナ名・ネットワーク名になり、書籍の実行例（sample-app-web-1 など）と食い違う。
+name: sample-app
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file: .env
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # 第7章: CSRFの演習用。攻撃者サイトを模した簡易HTTPサーバー。
+  # exploit-examples/ 以下の攻撃用HTMLファイルを配信する。
+  # SameSite Cookieはポート番号を区別しないため、localhost:3000とは別ホスト名
+  # （http://evil.test:8080 、hostsファイルで127.0.0.1に向ける）でアクセスする。
+  attacker:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./exploit-examples:/usr/share/nginx/html:ro
+
+volumes:
+  postgres_data:
+  bundle_cache:

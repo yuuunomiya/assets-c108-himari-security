@@ -1,0 +1,31 @@
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">アカウント設定</h1>
+
+  <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+    <div class="p-8 space-y-6">
+      <div>
+        <p class="text-sm text-gray-500 mb-1">お名前</p>
+        <p class="text-gray-900 font-medium"><%= @user.name.presence || "（未設定）" %></p>
+      </div>
+
+      <div>
+        <p class="text-sm text-gray-500 mb-1">メールアドレス</p>
+        <p class="text-gray-900 font-medium"><%= @user.email %></p>
+      </div>
+
+      <% if @user.admin? %>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">権限</p>
+          <span class="text-sm bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-medium">管理者</span>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="border-t border-gray-200 p-8 flex flex-wrap gap-3">
+      <%= link_to "プロフィールを編集", edit_profile_path,
+          class: "bg-blue-600 text-white font-medium px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors" %>
+      <%= link_to "パスワード・退会の設定", edit_user_registration_path,
+          class: "text-gray-600 hover:text-blue-600 font-medium px-5 py-2.5 border border-gray-300 rounded-lg transition-colors" %>
+    </div>
+  </div>
+</div>

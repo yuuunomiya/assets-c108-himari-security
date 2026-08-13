@@ -1,0 +1,73 @@
+ja:
+  date:
+    formats:
+      default: "%Y/%m/%d"
+      long: "%Y年%m月%d日"
+      short: "%m/%d"
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M"
+      long: "%Y年%m月%d日 %H:%M"
+      short: "%m/%d %H:%M"
+  activerecord:
+    models:
+      user: ユーザー
+      product: 商品
+      order: 注文
+      order_item: 注文明細
+    attributes:
+      user:
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
+      product:
+        name: 商品名
+        description: 商品説明
+        price: 価格
+        category: カテゴリ
+        stock: 在庫数
+        image_url: 画像URL
+        featured: おすすめ
+  devise:
+    sessions:
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
+      already_signed_in: "すでにログインしています。"
+      new:
+        sign_in: "ログイン"
+    registrations:
+      signed_up: "アカウント登録が完了しました。"
+      signed_up_but_unconfirmed: "確認メールを送信しました。メールを確認してアカウントを有効化してください。"
+      update_needs_confirmation: "アカウント情報を更新しました。メールアドレスの変更には確認が必要です。"
+      destroyed: "アカウントを削除しました。"
+      new:
+        sign_up: "新規登録"
+    passwords:
+      send_instructions: "パスワードリセットのメールを送信しました。"
+      updated: "パスワードを変更しました。"
+      updated_not_active: "パスワードを変更しました。"
+      send_paranoid_instructions: "メールアドレスが登録されている場合、パスワードリセットのメールを送信しました。"
+      no_token: "このページにはアクセスできません。パスワードリセットメールのリンクからアクセスしてください。"
+    confirmations:
+      send_instructions: "確認メールを送信しました。"
+      send_paranoid_instructions: "メールアドレスが登録済みかつ未確認の場合、確認メールを送信しました。"
+      confirmed: "メールアドレスの確認が完了しました。"
+    unlocks:
+      send_instructions: "ロック解除のメールを送信しました。"
+      send_paranoid_instructions: "メールアドレスが登録済みかつロックされている場合、ロック解除メールを送信しました。"
+      unlocked: "アカウントのロックを解除しました。"
+    failure:
+      already_authenticated: "すでにログインしています。"
+      unauthenticated: "ログインしてください。"
+      unconfirmed: "メールアドレスの確認が完了していません。"
+      locked: "アカウントがロックされています。"
+      invalid: "メールアドレスまたはパスワードが違います。"
+      last_attempt: "もう一度失敗するとアカウントがロックされます。"
+      not_found_in_database: "メールアドレスまたはパスワードが違います。"
+      timeout: "セッションがタイムアウトしました。もう一度ログインしてください。"
+      inactive: "アカウントが有効化されていません。"
+  errors:
+    messages:
+      not_saved:
+        one: "1件のエラーがあります"
+        other: "%{count}件のエラーがあります"

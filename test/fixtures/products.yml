@@ -1,0 +1,23 @@
+capacitor_a:
+  name: テスト用コンデンサ
+  description: テスト用の積層セラミックコンデンサ。
+  price: 100
+  category: capacitor
+  stock: 10
+  featured: false
+
+resistor_a:
+  name: テスト用抵抗
+  description: テスト用のカーボン抵抗。
+  price: 30
+  category: resistor
+  stock: 50
+  featured: false
+
+low_stock:
+  name: 在庫わずかな半導体
+  description: 在庫不足の検証に使う商品。
+  price: 500
+  category: semiconductor
+  stock: 1
+  featured: false

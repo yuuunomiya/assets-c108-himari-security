@@ -1,0 +1,48 @@
+<div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <div class="text-center mb-8">
+      <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+        <span class="text-white font-bold text-xl">M</span>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-900">ログイン</h2>
+      <p class="text-gray-500 text-sm mt-1">ミレニアム電子部品株式会社</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+      <%# data-turbo="false": Turboでのフォーム送信はfetchを使うため、第9章のオープンリダイレクト演習で
+          外部オリジン（evil.test）へリダイレクトさせようとするとCORSにより追跡できず、画面が変化しない。
+          通常のブラウザナビゲーションとして送信させることで、サーバー側のリダイレクト先をそのまま反映させる %>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-5", data: { turbo: false } }) do |f| %>
+        <%# ログイン後の遷移先を引き継ぐ。第9章: 現在はredirect_toの中身を検証せずそのまま
+            使っているため、外部サイトへのオープンリダイレクトが可能な状態になっている
+            （安全版では after_sign_in_path_for で相対パスのみ許可する） %>
+        <%= hidden_field_tag :redirect_to, params[:redirect_to] %>
+        <div>
+          <%= f.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email",
+              class: "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+        </div>
+
+        <div>
+          <%= f.label :password, "パスワード", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.password_field :password, autocomplete: "current-password",
+              class: "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="flex items-center">
+            <%= f.check_box :remember_me, class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" %>
+            <%= f.label :remember_me, "ログイン状態を保持する", class: "ml-2 text-sm text-gray-600" %>
+          </div>
+        <% end %>
+
+        <%= f.submit "ログイン",
+            class: "w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors cursor-pointer text-lg" %>
+      <% end %>
+
+      <div class="mt-6 text-center text-sm">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>

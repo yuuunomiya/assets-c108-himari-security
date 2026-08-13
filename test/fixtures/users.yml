@@ -1,0 +1,14 @@
+# パスワードはいずれも "password"。Devise の暗号化方式でダイジェスト化する。
+<% password_digest = Devise::Encryptor.digest(User, "password") %>
+
+regular_user:
+  email: user@example.com
+  encrypted_password: <%= password_digest %>
+  name: 一般ユーザー
+  admin: false
+
+admin_user:
+  email: admin@example.com
+  encrypted_password: <%= password_digest %>
+  name: 管理者
+  admin: true
