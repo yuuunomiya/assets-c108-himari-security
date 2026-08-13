@@ -21,19 +21,19 @@ class ApplicationController < ActionController::Base
   # 脆弱性を含まないバージョン（安全・参考用）:
   # redirect_to パラメータを Rails の url_from で検証し、同一ホスト内のみ許可する。
   # これにより、ログインURLに細工した外部URLへ遷移させるオープンリダイレクトを防ぐ。
-  def after_sign_in_path_for(resource)
-    url_from(params[:redirect_to]) || stored_location_for(resource) || super
-  end
-
-  # 第9章: オープンリダイレクト:
-  # redirect_to パラメータの中身を検証せずそのまま遷移先として使ってしまうと、
-  # ログインURLに外部サイトを指定されたとき、ログイン成功後にその外部サイトへ
-  # 誘導されてしまう（config/application.rbでaction_on_open_redirectも
-  # 緩めてしまうと、Rails標準の安全機構にも守られなくなる）。
   #
   # def after_sign_in_path_for(resource)
-  #   params[:redirect_to].presence || stored_location_for(resource) || super
+  #   url_from(params[:redirect_to]) || stored_location_for(resource) || super
   # end
+
+  # 第9章: オープンリダイレクト（現在有効）:
+  # redirect_to パラメータの中身を検証せずそのまま遷移先として使っているため、
+  # ログインURLに外部サイトを指定されると、ログイン成功後にその外部サイトへ
+  # 誘導されてしまう（config/application.rbでaction_on_open_redirectも
+  # 緩めているため、Rails標準の安全機構にも守られない）。
+  def after_sign_in_path_for(resource)
+    params[:redirect_to].presence || stored_location_for(resource) || super
+  end
 
   private
 

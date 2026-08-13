@@ -29,13 +29,13 @@ module App
     # config.load_defaults 7.0以降の既定値は:raiseになっており、
     # redirect_toが自分と異なるホストへ遷移しようとした際に例外を送出して
     # オープンリダイレクトを未然に防いでくれる。
-    config.action_controller.action_on_open_redirect = :raise
-
-    # 第9章: オープンリダイレクト:
-    # Railsが標準で備えているこの安全機構を:logに緩めてしまうと、
-    # 警告をログに残すだけでリダイレクト自体は素通りしてしまう。
-    # その状態でafter_sign_in_path_forが外部URLを返すと、そのまま遷移してしまう。
     #
-    # config.action_controller.action_on_open_redirect = :log
+    # config.action_controller.action_on_open_redirect = :raise
+
+    # 第9章: オープンリダイレクト（現在有効）:
+    # Railsが標準で備えているこの安全機構を:logに緩めてしまっているため、
+    # 警告をログに残すだけでリダイレクト自体は素通りしてしまう。
+    # そのため、after_sign_in_path_forが外部URLを返すとそのまま遷移してしまう。
+    config.action_controller.action_on_open_redirect = :log
   end
 end
