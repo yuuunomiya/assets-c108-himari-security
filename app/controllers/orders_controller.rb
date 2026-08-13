@@ -12,13 +12,13 @@ class OrdersController < ApplicationController
     # 脆弱性を含まないバージョン（安全・参考用）:
     # 自分の注文だけをスコープに含めることで、他人の注文IDを指定されても
     # 見つからない扱い（404）にする。
-    @order = current_user.orders.find(params[:id])
+    #
+    # @order = current_user.orders.find(params[:id])
 
     # 第8章: IDOR:
-    # current_userでスコープせずOrderを直接検索してしまうと、
+    # current_userでスコープせずOrderを直接検索しているため、
     # 注文IDさえ分かれば他人の注文でも閲覧できてしまう。
-    #
-    # @order = Order.find(params[:id])
+    @order = Order.find(params[:id])
   end
 
   def new

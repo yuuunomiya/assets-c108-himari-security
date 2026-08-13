@@ -12,24 +12,23 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to profile_path
   end
 
-  # 第8章: マスアサインメントの回帰テスト。
+  # 第8章: マスアサインメント（現在有効）の回帰テスト。
   #
   # 脆弱性を含まないバージョン（安全・参考用）:
-  test "cannot escalate to admin via mass assignment" do
-    assert_not users(:regular_user).admin?
-
-    patch profile_path, params: { user: { name: "x", admin: true } }
-
-    assert_not users(:regular_user).reload.admin?
-  end
-
-  # test "escalates to admin via mass assignment" do
+  # test "cannot escalate to admin via mass assignment" do
   #   assert_not users(:regular_user).admin?
   #
   #   patch profile_path, params: { user: { name: "x", admin: true } }
   #
-  #   assert users(:regular_user).reload.admin?
+  #   assert_not users(:regular_user).reload.admin?
   # end
+  test "escalates to admin via mass assignment" do
+    assert_not users(:regular_user).admin?
+
+    patch profile_path, params: { user: { name: "x", admin: true } }
+
+    assert users(:regular_user).reload.admin?
+  end
 
   test "requires authentication" do
     sign_out users(:regular_user)
