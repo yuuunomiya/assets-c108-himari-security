@@ -13,17 +13,17 @@ Rails.application.routes.draw do
 
   root "home#index"
 
-  resources :products, only: [:index, :show]
+  resources :products, only: [ :index, :show ]
 
-  resource :cart, only: [:show] do
+  resource :cart, only: [ :show ] do
     post   "add/:product_id",    to: "carts#add",    as: :add_to
     patch  "update/:product_id", to: "carts#update", as: :update_item
     delete "remove/:product_id", to: "carts#remove", as: :remove_from
   end
 
-  resources :orders, only: [:index, :show, :new, :create]
+  resources :orders, only: [ :index, :show, :new, :create ]
 
-  resource :profile, only: [:show, :edit, :update]
+  resource :profile, only: [ :show, :edit, :update ]
 
   namespace :admin do
     resources :products
