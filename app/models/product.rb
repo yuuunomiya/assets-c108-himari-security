@@ -26,13 +26,13 @@ class Product < ApplicationRecord
     # 脆弱性を含まないバージョン（安全・参考用）:
     # プレースホルダ（:q）とsanitize_sql_likeにより、SQL文の構造とLIKE用ワイルドカードの
     # 両方が安全にエスケープされている。
-    where("name ILIKE :q OR description ILIKE :q", q: "%#{sanitize_sql_like(query)}%") if query.present?
+    #
+    # where("name ILIKE :q OR description ILIKE :q", q: "%#{sanitize_sql_like(query)}%") if query.present?
 
     # 第6章: SQLインジェクション:
-    # 検索キーワードをプレースホルダを使わず直接SQL文字列に埋め込んでしまうと、
+    # 検索キーワードをプレースホルダを使わず直接SQL文字列に埋め込んでしまっているため、
     # queryの中身次第でSQL文の構造そのものを書き換えられてしまう。
-    #
-    # where("name ILIKE '%#{query}%' OR description ILIKE '%#{query}%'") if query.present?
+    where("name ILIKE '%#{query}%' OR description ILIKE '%#{query}%'") if query.present?
   }
 
   def category_label

@@ -10,12 +10,11 @@ class ProductsController < ApplicationController
   def show
     # 脆弱性を含まないバージョン（安全・参考用）:
     # 販売停止中の商品は、存在しない商品と同じく404として扱う。
-    @product = Product.find_by!(id: params[:id], discontinued: false)
+    # @product = Product.find_by!(id: params[:id], discontinued: false)
 
     # 第6章: SQLインジェクション:
-    # 商品IDをプレースホルダを使わず直接SQL文に埋め込んでしまうと、
+    # 商品IDをプレースホルダを使わず直接SQL文に埋め込んでいるため、
     # discontinued の判定ごとコメントアウトで無効化されてしまう。
-    #
-    # @product = Product.where("id = #{params[:id]} AND discontinued = false").first!
+    @product = Product.where("id = #{params[:id]} AND discontinued = false").first!
   end
 end
