@@ -12,14 +12,14 @@ Rails.application.configure do
   # 脆弱性を含まないバージョン（安全・参考用）:
   # 外部からアクセス可能な環境を想定し、スタックトレースやSQL文を含む詳細な
   # エラー画面を出さないようにする。一般利用者には簡潔なエラーページのみ表示される。
-  config.consider_all_requests_local = false
+  #
+  # config.consider_all_requests_local = false
 
   # 第4章: セキュリティ設定の不備:
   # 開発時のデバッグモード（詳細なエラー画面を表示する設定）を、外部からアクセス
   # 可能な環境でも無効化し忘れると、例外クラス名・ファイルパス・スタックトレース・
   # SQL文などの内部情報がそのまま画面に表示されてしまう。
-  #
-  # config.consider_all_requests_local = true
+  config.consider_all_requests_local = true
 
   # Enable server timing.
   config.server_timing = true
